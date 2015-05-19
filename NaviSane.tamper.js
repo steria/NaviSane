@@ -1,10 +1,9 @@
 // ==UserScript==
 // @name        NaviSane
 // @version     1.6
-// @namespace   https://github.com/jlous/NaviSane
-// @homepage    https://github.com/jlous/NaviSane
-// @downloadURL https://github.com/jlous/NaviSane/raw/master/NaviSane.tamper.js
-// @copyright   2013, Joachim Lous
+// @namespace   https://github.com/steria/NaviSane
+// @homepage    https://github.com/steria/NaviSane
+// @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.tamper.js
 // @description GUI-tweaks for timeføring
 // @match       https://naviwep.steria.no/*
 // @require     http://code.jquery.com/jquery-1.10.2.min.js
