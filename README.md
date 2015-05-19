@@ -15,5 +15,3 @@ Features
 * Knapper for neste/forrige periode
 * Mer leselig periode-overskrift
 * Dato i kolonneheadere
-* Sum havner rett under tilhørende celler
-* Celler med plass til 2 desimaler
