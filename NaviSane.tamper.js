@@ -92,6 +92,10 @@ function onPeriodChange(handler){
     });
 }
 
+function zebraStripes() {
+    $("head").append("<style>.rgMasterTable tbody tr:nth-child(even) { background-color: #E4ECF2; }</style>");
+}
+
 function initPeriod(){
     saneColumnHeaders();
     saneCellAlignment();
@@ -102,6 +106,7 @@ function initPeriodDirectView(){
     sanePeriodNavigation();
     saneCellWidths();
     onPeriodChange(initPeriod);
+    zebraStripes();
     initPeriod();
 }
 
@@ -119,7 +124,6 @@ function initPage(){
 initPage();
 
 // TODO:
-// zebraStripes()
 // likeYesterdayShortcut()
 // saneTabbingOrder()
 // saneArrowKeys()
