@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     1.6
+// @version     1.7
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.tamper.js
@@ -9,6 +9,16 @@
 // @require     http://code.jquery.com/jquery-1.10.2.min.js
 // ==/UserScript==
 
+// Pre-commit sjekkliste:
+// * Justere @version
+// * Beskrive feature i readme.md (og justere "NY"-markering/er der)
+
+// TODO:
+// highlightZeroHourDays()
+// likeYesterdayShortcut()
+// saneTabbingOrder()
+// saneArrowKeys()
+// reopenButton()
 
 if ( !String.prototype.contains ) {
     String.prototype.contains = function() {
@@ -122,9 +132,4 @@ function initPage(){
 }
 
 initPage();
-
-// TODO:
-// likeYesterdayShortcut()
-// saneTabbingOrder()
-// saneArrowKeys()
 
