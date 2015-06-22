@@ -13,12 +13,16 @@
 // * Justere @version
 // * Beskrive feature i readme.md (og justere "NY"-markering/er der)
 
-// TODO:
+// TODO/WISHLIST:
+// highlightNegativeDiff()
 // highlightZeroHourDays()
+// spreadsheetLook()
 // likeYesterdayShortcut()
 // saneTabbingOrder()
 // saneArrowKeys()
 // reopenButton()
+
+
 
 if ( !String.prototype.contains ) {
     String.prototype.contains = function() {
