@@ -8,7 +8,7 @@ Installering
 * Installer browser-plugin for userscripts
   * for Chrome: [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
   * for FireFox: [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)
-* På github, gå til NaviSane.tamper.js
+* På github, gå til NaviSane.user.js
 * Velg "Raw", og plugin vil tilby å installere
 
 Features

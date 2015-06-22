@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     1.7
+// @version     1.8
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
-// @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.tamper.js
+// @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
 // @description GUI-tweaks for timeføring
 // @match       https://naviwep.steria.no/*
 // @require     http://code.jquery.com/jquery-1.10.2.min.js
@@ -14,7 +14,7 @@
 // * Beskrive feature i readme.md (og justere "NY"-markering/er der)
 
 // TODO/WISHLIST:
-// highlightNegativeDiff()
+// highlightNegativeDiffs()
 // highlightZeroHourDays()
 // spreadsheetLook()
 // likeYesterdayShortcut()
@@ -23,16 +23,20 @@
 // reopenButton()
 
 
+// UTILS
 
 if ( !String.prototype.contains ) {
     String.prototype.contains = function() {
-        return String.prototype.indexOf.apply( this, arguments ) !== -1;
+        return this.indexOf(arguments[0]) !== -1;
     };
 }
 
 String.prototype.appearsIn = function() {
-    return String.prototype.indexOf.apply( arguments[0], this ) !== -1;
+    return arguments[0].indexOf(this) !== -1;
 };
+
+
+// FEATURES
 
 function saneColumnHeaders(){
     var monthName = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -97,6 +101,12 @@ function killThoseEffingMenuAnimations(){
     Telerik.Web.UI.RadMenu.prototype.get_collapseDelay = function(){return 0;}
 }    
 
+function zebraStripes() {
+    $("head").append("<style>.rgMasterTable tbody tr:nth-child(even) { background-color: #E4ECF2; }</style>");
+}
+
+
+// TRIGGERS
 
 function onPeriodChange(handler){
     $(".CurrentPeriod").on("DOMNodeInserted", function(e){
@@ -104,10 +114,6 @@ function onPeriodChange(handler){
 			handler();
         }
     });
-}
-
-function zebraStripes() {
-    $("head").append("<style>.rgMasterTable tbody tr:nth-child(even) { background-color: #E4ECF2; }</style>");
 }
 
 function initPeriod(){
@@ -119,8 +125,9 @@ function initPeriod(){
 function initPeriodDirectView(){
     sanePeriodNavigation();
     saneCellWidths();
-    onPeriodChange(initPeriod);
     zebraStripes();
+    
+    onPeriodChange(initPeriod);
     initPeriod();
 }
 
@@ -130,7 +137,7 @@ function initSite(){
 
 function initPage(){
     initSite();
-    if ("/period_direct.aspx".appearsIn(document.location.pathname)){
+    if ("/timereg_direct.aspx".appearsIn(document.location.pathname)){
         initPeriodDirectView();
     }
 }
