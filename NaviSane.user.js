@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     1.9
+// @version     2.0
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -35,12 +35,18 @@ String.prototype.appearsIn = function() {
     return arguments[0].indexOf(this) !== -1;
 };
 
-const KEYCODE_EQUALS = 61;
+const CHAR_EQUALS = 61;
+
+const KEY_LEFT = 37;
+const KEY_UP = 38;
+const KEY_RIGHT = 39;
+const KEY_DOWN = 40;
+const KEY_S = 83;
 
 
 // FEATURES
 
-function saneColumnHeaders(){
+function saneColumnHeaders() {
     var monthName = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     $("a[title^='Date']" ).each(function(){
         var title = $(this).attr("title")
@@ -51,11 +57,11 @@ function saneColumnHeaders(){
     });
 }
 
-function saneCellAlignment(){
+function saneCellAlignment() {
     $('span.riSingle').css('width','auto');
 }
 
-function sanePeriodHeader(){
+function sanePeriodHeader() {
     var headerSpan = $("#ctl00_ContentPlaceHolder1_LBL_CurrentPeriod");
     var oldTitle = headerSpan.text();
     var groups = /^(\d\d\.\d\d\.\d\d\d\d - \d\d\.\d\d\.\d\d\d\d) .Week(\d\d?).\d\d\d\d ?(\d?)/.exec(oldTitle);
@@ -67,12 +73,12 @@ function sanePeriodHeader(){
     headerSpan.html(newText);
 }
 
-function currentPeriod(){
+function currentPeriod() {
     var header = $("#ctl00_ContentPlaceHolder1_LBL_CurrentPeriod").text();
     return header.replace(/^.*(\d\d\.\d\d\.\d\d\d\d - \d\d\.\d\d\.\d\d\d\d).*$/, "$1");
 }
 
-function sanePeriodNavigation(){
+function sanePeriodNavigation() {
     $(".CurrentPeriod").prepend("<button type='button' id='prevPeriod'>◀</button>");
     $(".CurrentPeriod").append("<button type='button' id='nextPeriod'>▶</button>");
     
@@ -93,11 +99,11 @@ function sanePeriodNavigation(){
     } );
 }
 
-function saneCellWidths(){
+function saneCellWidths() {
 	$("head").append("<style>.myclass { width: 40px !important; }</style>");
 }
 
-function killThoseEffingMenuAnimations(){
+function killThoseEffingMenuAnimations() {
     Telerik.Web.UI.AnimationSettings.prototype.get_type = function(){return 0;}
     Telerik.Web.UI.AnimationSettings.prototype.get_duration = function(){return 0;}
     Telerik.Web.UI.RadMenu.prototype.get_collapseDelay = function(){return 0;}
@@ -109,20 +115,20 @@ function zebraStripes() {
 
 function inputsInSameColumn($input){
     var column = $input.closest('td').index() +1;
-    var $inputs = $input.closest('table').find('td:nth-child('+ column +') .riTextBox');
+    var $inputs = $input.closest('table').find('td:nth-child('+ column +') input.riTextBox');
     return $inputs;
 }
 
 function inputLikeYesterday($input) {
-    var $inputToLeft = $input.closest("td").prev().find(".riTextBox");
+    var $inputToLeft = $input.closest("td").prev().find("input.riTextBox");
     if ($inputToLeft.length === 1){
         $input.val($inputToLeft.val());
     }
 }
 
 function columnLikeYesterday($input) {
-    var $inputToLeft = $input.closest("td").prev().find(".riTextBox");
-    var $inputToRight = $input.closest("td").next().find(".riTextBox");
+    var $inputToLeft = $input.closest("td").prev().find("input.riTextBox");
+    var $inputToRight = $input.closest("td").next().find("input.riTextBox");
     if ($inputToLeft.length === 0){
         columnLikeYesterday($inputToRight);
         return;
@@ -134,22 +140,72 @@ function columnLikeYesterday($input) {
     $inputToRight.focus();
 }
 
+function likeYesterdayHandler(keyEvent) {
+    if (keyEvent.keyCode === KEYCODE_EQUALS){ 
+        columnLikeYesterday($(keyEvent.target));
+    }
+}
+
 function likeYesterdayShortcut() {
-    $(".riTextBox").keypress(function(event){
-        if (event.keyCode === KEYCODE_EQUALS){ 
-            columnLikeYesterday($(event.target));
+    $(document).keypress(function(keyEvent) { // only 'keypress' identifies '=' consistently without regard to actual key combo used (on Chrome)
+        if (keyEvent.keyCode === KEYPRESS_EQUALS){ 
+            columnLikeYesterday($(keyEvent.target));
         }
-    }).attr("title","Like yesterday: '='");
+    });
+    $("input.riTextBox").attr("title","Like yesterday: '='");
 }
 
 function saveShortcut(){
-    $(document).on('keydown', function(e){
-        if(e.ctrlKey && e.which === 83){ // Check for the Ctrl key being pressed, and if the key = [S] (83)
-            e.preventDefault();
-            e.target.blur();
+    $(document).keydown(function(keyEvent){
+        if(keyEvent.ctrlKey && keyEvent.keyCode === KEY_S){
+            keyEvent.preventDefault();
+            keyEvent.target.blur();
             $("#ctl00_ContentPlaceHolder1_Grid_TimeSheet_ctl00_ctl02_ctl00_BTN_SaveRegistrations").click();
             return false;
         }
+    });
+}
+
+function upCell($input){
+    var columnNo = $($input).closest('td').index();
+    var $row = $input.closest('tr');
+    $row.prev().children().eq(columnNo).find('input.riTextBox').focus();
+}
+
+function downCell($input){
+    var columnNo = $($input).closest('td').index();
+    var $row = $input.closest('tr');
+    $row.next().children().eq(columnNo).find('input.riTextBox').focus();
+}
+
+function rightCell($input){
+    //TODO: move focus right ONLY if cursor is at end of content.
+}
+
+function leftCell($input){
+    //TODO: move focus left ONLY if cursor is at start of content.
+}
+
+function saneArrowKeys() {
+    $(document).keydown(function(keyEvent){ // only keyup/keydown is generated for arrow keys (in Chrome)
+        switch(keyEvent.keyCode){
+            case KEY_UP:  
+                upCell($(keyEvent.target));
+                break;
+            case KEY_DOWN:  
+                downCell($(keyEvent.target));
+                break;
+            case KEY_RIGHT: 
+                rightCell($(keyEvent.target));
+                break;
+            case KEY_LEFT: 
+                leftCell($(keyEvent.target));
+                break;
+        }
+    });
+    
+    $("input.riTextBox").each(function(){
+        this.control._incrementSettings.InterceptArrowKeys = false;
     });
 }
 
@@ -158,7 +214,7 @@ function saveShortcut(){
 
 function onPeriodChange(handler){
     $(".CurrentPeriod").on("DOMNodeInserted", function(e){
-        if (e.target.id == "ctl00_ContentPlaceHolder1_LBL_Approved"){
+        if (e.target.id === "ctl00_ContentPlaceHolder1_LBL_Approved"){
 			handler();
         }
     });
@@ -168,6 +224,7 @@ function initPeriod(){
     saneColumnHeaders();
     saneCellAlignment();
     sanePeriodHeader();
+    setTimeout(saneArrowKeys, 100); // Timeout is an ugly hack. TODO: find clean trigger that occurs after page applies arrow key bindings, even following save.
 }
 
 function initPeriodDirectView(){

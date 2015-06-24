@@ -13,6 +13,7 @@ Installering
 
 Features
 --------
+* **NY**: Navigere med piltaster (halvferdig - kun vertikalt)
 * **NY**: Lagre med ctrl+s 
 * **NY**: Hurtigtast "som i går": '=' 
 * Sebrastriper, for å holde bedre rede på radene (takk til Mats)
