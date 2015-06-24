@@ -17,10 +17,10 @@
 // highlightNegativeDiffs()
 // highlightZeroHourDays()
 // spreadsheetLook()
-// likeYesterdayShortcut()
 // saneTabbingOrder()
 // saneArrowKeys()
 // reopenButton()
+// saveShortcut();
 
 
 // UTILS
@@ -34,6 +34,8 @@ if ( !String.prototype.contains ) {
 String.prototype.appearsIn = function() {
     return arguments[0].indexOf(this) !== -1;
 };
+
+const KEYCODE_EQUALS = 61;
 
 
 // FEATURES
@@ -105,8 +107,43 @@ function zebraStripes() {
     $("head").append("<style>.rgMasterTable tbody tr:nth-child(even) { background-color: #E4ECF2; }</style>");
 }
 
+function inputsInSameColumn($input){
+    var column = $input.closest('td').index() +1;
+    var $inputs = $input.closest('table').find('td:nth-child('+ column +') .riTextBox');
+    return $inputs;
+}
 
-// TRIGGERS
+function inputLikeYesterday($input) {
+    var $inputToLeft = $input.closest("td").prev().find(".riTextBox");
+    if ($inputToLeft.length === 1){
+        $input.val($inputToLeft.val());
+    }
+}
+
+function columnLikeYesterday($input) {
+    var $inputToLeft = $input.closest("td").prev().find(".riTextBox");
+    var $inputToRight = $input.closest("td").next().find(".riTextBox");
+    if ($inputToLeft.length === 0){
+        columnLikeYesterday($inputToRight);
+        return;
+    }
+    inputsInSameColumn($input).each(function(){
+        inputLikeYesterday($(this));
+    });
+
+    $inputToRight.focus();
+}
+
+function likeYesterdayShortcut() {
+    $(".riTextBox").keypress(function(event){
+        if (event.keyCode === KEYCODE_EQUALS){ 
+            columnLikeYesterday($(event.target));
+        }
+    }).attr("title","Like yesterday: press '='");
+}
+
+                             
+// SETUP
 
 function onPeriodChange(handler){
     $(".CurrentPeriod").on("DOMNodeInserted", function(e){
@@ -126,20 +163,25 @@ function initPeriodDirectView(){
     sanePeriodNavigation();
     saneCellWidths();
     zebraStripes();
+    likeYesterdayShortcut();
     
     onPeriodChange(initPeriod);
     initPeriod();
 }
 
-function initSite(){
+function initCommon(){
     killThoseEffingMenuAnimations();
 }
 
-function initPage(){
-    initSite();
+function initView(){
     if ("/timereg_direct.aspx".appearsIn(document.location.pathname)){
         initPeriodDirectView();
     }
+}
+
+function initPage(){
+    initCommon();
+    initView();
 }
 
 initPage();

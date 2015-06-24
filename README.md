@@ -13,6 +13,7 @@ Installering
 
 Features
 --------
+* **NY**: Kopier gårsdagen med '=' 
 * **NY**: Sebrastriper, for å holde bedre rede på radene (takk til Mats)
 * Kjappe menyer, uten animasjoner og forsinkelser
 * Knapper for neste/forrige periode
