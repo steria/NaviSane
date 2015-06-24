@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     1.8
+// @version     1.9
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -15,12 +15,12 @@
 
 // TODO/WISHLIST:
 // highlightNegativeDiffs()
+// highlightPositiveDiffs()
 // highlightZeroHourDays()
 // spreadsheetLook()
 // saneTabbingOrder()
 // saneArrowKeys()
 // reopenButton()
-// saveShortcut();
 
 
 // UTILS
@@ -104,7 +104,7 @@ function killThoseEffingMenuAnimations(){
 }    
 
 function zebraStripes() {
-    $("head").append("<style>.rgMasterTable tbody tr:nth-child(even) { background-color: #E4ECF2; }</style>");
+    $("head").append("<style>.rgMasterTable>tbody tr:nth-child(even) { background-color: #E4ECF2; }</style>");
 }
 
 function inputsInSameColumn($input){
@@ -139,7 +139,18 @@ function likeYesterdayShortcut() {
         if (event.keyCode === KEYCODE_EQUALS){ 
             columnLikeYesterday($(event.target));
         }
-    }).attr("title","Like yesterday: press '='");
+    }).attr("title","Like yesterday: '='");
+}
+
+function saveShortcut(){
+    $(document).on('keydown', function(e){
+        if(e.ctrlKey && e.which === 83){ // Check for the Ctrl key being pressed, and if the key = [S] (83)
+            e.preventDefault();
+            e.target.blur();
+            $("#ctl00_ContentPlaceHolder1_Grid_TimeSheet_ctl00_ctl02_ctl00_BTN_SaveRegistrations").click();
+            return false;
+        }
+    });
 }
 
                              
@@ -164,6 +175,7 @@ function initPeriodDirectView(){
     saneCellWidths();
     zebraStripes();
     likeYesterdayShortcut();
+    saveShortcut();
     
     onPeriodChange(initPeriod);
     initPeriod();
