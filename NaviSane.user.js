@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.0
+// @version     2.1
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -110,7 +110,11 @@ function killThoseEffingMenuAnimations() {
 }    
 
 function zebraStripes() {
-    $("head").append("<style>.rgMasterTable>tbody tr:nth-child(even) { background-color: #E4ECF2; }</style>");
+    $("head").append("<style>"+
+                     ".rgMasterTable>tbody tr:nth-child(even) { background-color: #E4ECF2; }" +
+                     ".rgMasterTable>tbody>tr.rgEditRow>td{ border-bottom-width: 0;}" +        
+                     //".rgMasterTable>tbody>tr.rgEditRow>td:nth-child(1n+6) {width: 50px; border-right:solid 1px silver; }" +
+    "</style>");
 }
 
 function inputsInSameColumn($input){
@@ -231,7 +235,7 @@ function initPeriodDirectView(){
     sanePeriodNavigation();
     saneCellWidths();
     zebraStripes();
-    likeYesterdayShortcut();
+    //likeYesterdayShortcut(); //buggy
     saveShortcut();
     
     onPeriodChange(initPeriod);
