@@ -16,7 +16,7 @@ Features
 * **NY**: Kun sebrastriper - ingen kantlinjer på rader
 * Navigere med piltaster (halvferdig - kun vertikalt)
 * Lagre med ctrl+s 
-* -Hurtigtast "som i går": '='- _disabled - var buggy. kanskje neste gang_
+* ~~Hurtigtast "som i går": '~~ _disabled - var buggy. kanskje neste gang_
 * Sebrastriper i tabellen (takk til Mats)
 * Kjappe menyer, uten animasjoner og forsinkelser
 * Knapper for neste/forrige periode
