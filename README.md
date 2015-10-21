@@ -13,10 +13,11 @@ Installering
 
 Features
 --------
-* **NY**: Navigere med piltaster (halvferdig - kun vertikalt)
-* **NY**: Lagre med ctrl+s 
-* **NY**: Hurtigtast "som i går": '=' 
-* Sebrastriper, for å holde bedre rede på radene (takk til Mats)
+* **NY**: Kun sebrastriper - ingen kantlinjer på rader
+* Navigere med piltaster (halvferdig - kun vertikalt)
+* Lagre med ctrl+s 
+* -Hurtigtast "som i går": '='- _disabled - var buggy. kanskje neste gang_
+* Sebrastriper i tabellen (takk til Mats)
 * Kjappe menyer, uten animasjoner og forsinkelser
 * Knapper for neste/forrige periode
 * Mer leselig periode-overskrift
