@@ -14,6 +14,7 @@
 // * Beskrive feature i readme.md (og justere "NY"-markering/er der)
 
 // TODO/WISHLIST:
+// menuHoverIntent()
 // highlightNegativeDiffs()
 // highlightPositiveDiffs()
 // highlightZeroHourDays()
