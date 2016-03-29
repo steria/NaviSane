@@ -14,6 +14,8 @@
 // * Beskrive feature i readme.md (og justere "NY"-markering/er der)
 
 // TODO/WISHLIST:
+// highlightLineUnderCursor
+// highlightFocusedLine
 // menuHoverIntent()
 // highlightNegativeDiffs()
 // highlightPositiveDiffs()
