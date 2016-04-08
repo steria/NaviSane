@@ -114,13 +114,13 @@ function saneCellWidths() {
 function killThoseEffingMenuAnimations() {
     Telerik.Web.UI.AnimationSettings.prototype.get_type = function () {
         return 0;
-    }
+    };
     Telerik.Web.UI.AnimationSettings.prototype.get_duration = function () {
         return 0;
-    }
+    };
     Telerik.Web.UI.RadMenu.prototype.get_collapseDelay = function () {
         return 0;
-    }
+    };
 }
 
 function zebraStripes() {
