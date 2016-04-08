@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.1.1
+// @version     2.1.2
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
