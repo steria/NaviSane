@@ -14,11 +14,11 @@
 // * Beskrive feature i readme.md (og justere "NY"-markering/er der)
 
 // TODO/WISHLIST:
-// saneArrowKeys()
-// saneTabbingOrder()
+// finish saneArrowKeys() (right/left navigation)
 // highlightNegativeDiffs()
 // highlightPositiveDiffs()
 // highlightZeroHourDays()
+// forbedre saneColumnWidth() => responsiveColumnWidths() - inc. responsive day names
 // spreadsheetLook()
 // highlightLineUnderCursor
 // highlightFocusedLine
@@ -30,17 +30,17 @@
 
 // UTILS
 
-if ( !String.prototype.contains ) {
-    String.prototype.contains = function() {
+if (!String.prototype.contains) {
+    String.prototype.contains = function () {
         return this.indexOf(arguments[0]) !== -1;
     };
 }
 
-String.prototype.appearsIn = function() {
+String.prototype.appearsIn = function () {
     return arguments[0].indexOf(this) !== -1;
 };
 
-const CHAR_EQUALS = 61;
+const KEYCODE_EQUALS = 61;
 
 const KEY_LEFT = 37;
 const KEY_UP = 38;
@@ -53,17 +53,17 @@ const KEY_S = 83;
 
 function saneColumnHeaders() {
     var monthName = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    $("a[title^='Date']" ).each(function(){
-        var title = $(this).attr("title")
+    $("a[title^='Date']").each(function () {
+        var title = $(this).attr("title");
         var month = Number(title.substr(10, 2));
         var day = Number(title.substr(12, 2));
         var date = monthName[month] + " " + day;
-        $(this).append("<br>"+date);
+        $(this).append("<br>" + date);
     });
 }
 
 function saneCellAlignment() {
-    $('span.riSingle').css('width','auto');
+    $('span.riSingle').css('width', 'auto');
 }
 
 function sanePeriodHeader() {
@@ -73,7 +73,7 @@ function sanePeriodHeader() {
     var dateRange = groups[1];
     var weekNo = groups[2];
     var weekPart = groups[3];
-    var weekSep = weekPart.length>0 ? "." : ""; 
+    var weekSep = weekPart.length > 0 ? "." : "";
     var newText = "&nbsp;<b>Week " + weekNo + weekSep + weekPart + "</b>&nbsp; <span style='color:silver;font-size:smaller'>" + dateRange + "</span>";
     headerSpan.html(newText);
 }
@@ -84,53 +84,61 @@ function currentPeriod() {
 }
 
 function sanePeriodNavigation() {
-    $(".CurrentPeriod").prepend("<button type='button' id='prevPeriod'>◀</button>");
-    $(".CurrentPeriod").append("<button type='button' id='nextPeriod'>▶</button>");
-    
-    $("#prevPeriod").click(function() {
+    $(".CurrentPeriod")
+        .prepend("<button type='button' id='prevPeriod'>◀</button>")
+        .append("<button type='button' id='nextPeriod'>▶</button>")
+    ;
+
+    $("#prevPeriod").click(function () {
         var period = currentPeriod();
         var dropdown = $("#ctl00_ContentPlaceHolder1_PeriodDropdownList_Arrow").get(0);
         dropdown.click();
-        var thisItem = $("li.rcbItem:contains('"+period+"')");
+        var thisItem = $("li.rcbItem:contains('" + period + "')");
         thisItem.next().click();
-    } );
-    
-    $("#nextPeriod").click(function() {
+    });
+
+    $("#nextPeriod").click(function () {
         var period = currentPeriod();
         var dropdown = $("#ctl00_ContentPlaceHolder1_PeriodDropdownList_Arrow").get(0);
         dropdown.click();
-        var thisItem = $("li.rcbItem:contains('"+period+"')");
+        var thisItem = $("li.rcbItem:contains('" + period + "')");
         thisItem.prev().click();
-    } );
+    });
 }
 
 function saneCellWidths() {
-	$("head").append("<style>.myclass { width: 40px !important; }</style>");
+    $("head").append("<style>.myclass { width: 40px !important; }</style>");
 }
+
 
 function killThoseEffingMenuAnimations() {
-    Telerik.Web.UI.AnimationSettings.prototype.get_type = function(){return 0;}
-    Telerik.Web.UI.AnimationSettings.prototype.get_duration = function(){return 0;}
-    Telerik.Web.UI.RadMenu.prototype.get_collapseDelay = function(){return 0;}
-}    
-
-function zebraStripes() {
-    $("head").append("<style>"+
-                     ".rgMasterTable>tbody tr:nth-child(even) { background-color: #E4ECF2; }" +
-                     ".rgMasterTable>tbody>tr.rgEditRow>td{ border-bottom-width: 0;}" +        
-                     //".rgMasterTable>tbody>tr.rgEditRow>td:nth-child(1n+6) {width: 50px; border-right:solid 1px silver; }" +
-    "</style>");
+    Telerik.Web.UI.AnimationSettings.prototype.get_type = function () {
+        return 0;
+    }
+    Telerik.Web.UI.AnimationSettings.prototype.get_duration = function () {
+        return 0;
+    }
+    Telerik.Web.UI.RadMenu.prototype.get_collapseDelay = function () {
+        return 0;
+    }
 }
 
-function inputsInSameColumn($input){
-    var column = $input.closest('td').index() +1;
-    var $inputs = $input.closest('table').find('td:nth-child('+ column +') input.riTextBox');
-    return $inputs;
+function zebraStripes() {
+    $("head").append("<style>" +
+        ".rgMasterTable>tbody tr:nth-child(even) { background-color: #E4ECF2; }" +
+        ".rgMasterTable>tbody>tr.rgEditRow>td{ border-bottom-width: 0;}" +
+        //".rgMasterTable>tbody>tr.rgEditRow>td:nth-child(1n+6) {width: 50px; border-right:solid 1px silver; }" +
+        "</style>");
+}
+
+function inputsInSameColumn($input) {
+    var column = $input.closest('td').index() + 1;
+    return $input.closest('table').find('td:nth-child(' + column + ') input.riTextBox');
 }
 
 function inputLikeYesterday($input) {
     var $inputToLeft = $input.closest("td").prev().find("input.riTextBox");
-    if ($inputToLeft.length === 1){
+    if ($inputToLeft.length === 1) {
         $input.val($inputToLeft.val());
     }
 }
@@ -138,35 +146,30 @@ function inputLikeYesterday($input) {
 function columnLikeYesterday($input) {
     var $inputToLeft = $input.closest("td").prev().find("input.riTextBox");
     var $inputToRight = $input.closest("td").next().find("input.riTextBox");
-    if ($inputToLeft.length === 0){
+    if ($inputToLeft.length === 0) {
         columnLikeYesterday($inputToRight);
         return;
     }
-    inputsInSameColumn($input).each(function(){
+    inputsInSameColumn($input).each(function () {
         inputLikeYesterday($(this));
     });
 
     $inputToRight.focus();
 }
 
-function likeYesterdayHandler(keyEvent) {
-    if (keyEvent.keyCode === KEYCODE_EQUALS){ 
-        columnLikeYesterday($(keyEvent.target));
-    }
-}
-
 function likeYesterdayShortcut() {
-    $(document).keypress(function(keyEvent) { // only 'keypress' identifies '=' consistently without regard to actual key combo used (on Chrome)
-        if (keyEvent.keyCode === KEYPRESS_EQUALS){ 
+    $(document).keypress(function (keyEvent) { // only 'keypress' identifies '=' consistently without regard to actual key combo used (on Chrome)
+        if (keyEvent.keyCode === KEYCODE_EQUALS) {
             columnLikeYesterday($(keyEvent.target));
         }
     });
-    $("input.riTextBox").attr("title","Like yesterday: '='");
+    $("input.riTextBox").attr("title", "Like yesterday: '='");
 }
 
-function saveShortcut(){
-    $(document).keydown(function(keyEvent){
-        if(keyEvent.ctrlKey && keyEvent.keyCode === KEY_S){
+
+function saveShortcut() {
+    $(document).keydown(function (keyEvent) {
+        if (keyEvent.ctrlKey && keyEvent.keyCode === KEY_S) {
             keyEvent.preventDefault();
             keyEvent.target.blur();
             $("#ctl00_ContentPlaceHolder1_Grid_TimeSheet_ctl00_ctl02_ctl00_BTN_SaveRegistrations").click();
@@ -175,89 +178,91 @@ function saveShortcut(){
     });
 }
 
-function upCell($input){
+function upCell($input) {
     var columnNo = $($input).closest('td').index();
     var $row = $input.closest('tr');
     $row.prev().children().eq(columnNo).find('input.riTextBox').focus();
 }
 
-function downCell($input){
+function downCell($input) {
     var columnNo = $($input).closest('td').index();
     var $row = $input.closest('tr');
     $row.next().children().eq(columnNo).find('input.riTextBox').focus();
 }
 
-function rightCell($input){
+function rightCell($input) {
     //TODO: move focus right ONLY if cursor is at end of content.
 }
 
-function leftCell($input){
+function leftCell($input) {
     //TODO: move focus left ONLY if cursor is at start of content.
 }
 
 function saneArrowKeys() {
-    $(document).keydown(function(keyEvent){ // only keyup/keydown is generated for arrow keys (in Chrome)
-        switch(keyEvent.keyCode){
-            case KEY_UP:  
+    $(document).keydown(function (keyEvent) { // only keyup/keydown is generated for arrow keys (in Chrome)
+        switch (keyEvent.keyCode) {
+            case KEY_UP:
                 upCell($(keyEvent.target));
                 break;
-            case KEY_DOWN:  
+            case KEY_DOWN:
                 downCell($(keyEvent.target));
                 break;
-            case KEY_RIGHT: 
+            case KEY_RIGHT:
                 rightCell($(keyEvent.target));
                 break;
-            case KEY_LEFT: 
+            case KEY_LEFT:
                 leftCell($(keyEvent.target));
                 break;
         }
     });
-    
-    $("input.riTextBox").each(function(){
+
+    $("input.riTextBox").each(function () {
         this.control._incrementSettings.InterceptArrowKeys = false;
     });
 }
 
-                             
+
 // SETUP
 
-function onPeriodChange(handler){
-    $(".CurrentPeriod").on("DOMNodeInserted", function(e){
-        if (e.target.id === "ctl00_ContentPlaceHolder1_LBL_Approved"){
-			handler();
+function onPeriodChange(handler) {
+    $(".CurrentPeriod").on("DOMNodeInserted", function (e) {
+        if (e.target.id === "ctl00_ContentPlaceHolder1_LBL_Approved") {
+            handler();
         }
     });
 }
 
-function initPeriod(){
+function initPeriod() {
     saneColumnHeaders();
     saneCellAlignment();
     sanePeriodHeader();
     setTimeout(saneArrowKeys, 100); // Timeout is an ugly hack. TODO: find clean trigger that occurs after page applies arrow key bindings, even following save.
 }
 
-function initPeriodDirectView(){
+function ignore() {
+} //pass item as param to get rid of 'unused' warnings
+
+function initPeriodDirectView() {
     sanePeriodNavigation();
     saneCellWidths();
     zebraStripes();
-    //likeYesterdayShortcut(); //buggy
+    ignore(likeYesterdayShortcut()); //TODO: reenable when bugs fixed
     saveShortcut();
-    
     onPeriodChange(initPeriod);
     initPeriod();
 }
 
-function initCommon(){
+function initCommon() {
     killThoseEffingMenuAnimations();
 }
 
-function initView(){
-    if ("/timereg_direct.aspx".appearsIn(document.location.pathname)){
+function initView() {
+    if ("/timereg_direct.aspx".appearsIn(document.location.pathname)) {
         initPeriodDirectView();
     }
 }
 
-function initPage(){
+function initPage() {
     initCommon();
     initView();
 }
