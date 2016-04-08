@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.1
+// @version     2.1.1
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -14,17 +14,19 @@
 // * Beskrive feature i readme.md (og justere "NY"-markering/er der)
 
 // TODO/WISHLIST:
-// highlightLineUnderCursor
-// highlightFocusedLine
-// menuHoverIntent()
+// saneArrowKeys()
+// saneTabbingOrder()
 // highlightNegativeDiffs()
 // highlightPositiveDiffs()
 // highlightZeroHourDays()
 // spreadsheetLook()
-// saneTabbingOrder()
-// saneArrowKeys()
+// highlightLineUnderCursor
+// highlightFocusedLine
 // reopenButton()
-
+// menuHoverIntent()
+// '.' => ','
+// 07:15 -> 7,25
+// fix "likeYesterday()"
 
 // UTILS
 
