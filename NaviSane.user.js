@@ -126,8 +126,8 @@ function killThoseEffingMenuAnimations() {
 
 function tweakZebraStripes() {
     $("head").append("<style>" +
+        ".RadGrid_WebBlue .rgRow>td, .RadGrid_WebBlue .rgAltRow>td { border-width:0 0 0 1px;}" +
         ".RadGrid_WebBlue .rgAltRow { background-color: #E4ECF2;}" +
-        ".RadGrid_WebBlue .rgAltRow>td { border-width:0 0 0 1px;}" +
         "</style>");
 }
 
