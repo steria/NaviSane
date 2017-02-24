@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.2.0
+// @version     2.3.0
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -108,9 +108,13 @@ function sanePeriodNavigation() {
 }
 
 function saneCellWidths() {
-    $("head").append("<style>.myclass { width: 4em !important; } .riSingle{width:auto !important;}</style>");
+    $("head").append(
+        "<style>"+
+        "input.myclass { width: 100% !important; } "+
+        ".riSingle {width:auto !important;} "+
+        "</style> "
+    );
 }
-
 
 function killThoseEffingMenuAnimations() {
     Telerik.Web.UI.AnimationSettings.prototype.get_type = function () {
@@ -124,10 +128,16 @@ function killThoseEffingMenuAnimations() {
     };
 }
 
-function tweakZebraStripes() {
+function spreasheetStyle() {
     $("head").append("<style>" +
-        ".RadGrid_WebBlue .rgRow>td, .RadGrid_WebBlue .rgAltRow>td { border-width:0 0 0 1px;}" +
-        ".RadGrid_WebBlue .rgAltRow { background-color: #E4ECF2;}" +
+        ".RadGrid_WebBlue .rgAltRow { background-color: #f0f3fa;}" +
+        ".RadGrid_WebBlue .rgFooter td{padding-right: 5px;}" +
+        ".rgMasterTable td[align=right]{font-family: Arial, sans-serif !important;}" +
+        ".rgMasterTable>tbody td{ background-color:rgba(0,0,0, 0.05);}" +
+        ".rgMasterTable>tbody td[align=right]{padding: 1px;  background-color:transparent;}" +
+        ".rgMasterTable>tbody td:last-child {background-color:rgba(0,0,0, 0.05);}" +
+        ".RadGrid_WebBlue .rgRow>td, .RadGrid_WebBlue .rgAltRow>td " + "  { border-width:0 0 0 1px;}" +
+        "input.myclass { background-color: transparent !important; border-width:0 !important; font-family: Arial, sans-serif !important } "+
         "</style>");
 }
 
@@ -253,7 +263,7 @@ function initPeriod() {
 function initPeriodDirectView() {
     sanePeriodNavigation();
     saneCellWidths();
-    tweakZebraStripes();
+    spreasheetStyle();
     ignore(likeYesterdayShortcut()); //TODO: reenable when bugs fixed
     saveShortcut();
 

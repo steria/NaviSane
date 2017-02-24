@@ -14,7 +14,7 @@ Installering
 Features
 --------
 * **NY**Rød/grønn highlight av timedifferanser
-* **NY**Tabellstyling tilpasset endringer i NaviWeb
+* **NY**Renere, flatere tabellstil
 * Kun sebrastriper - ingen kantlinjer på rader
 * Navigere med piltaster (halvferdig - kun vertikalt)
 * Lagre med ctrl+s 
