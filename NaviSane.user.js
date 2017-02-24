@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.1.2
+// @version     2.2.0
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -14,10 +14,8 @@
 // * Beskrive feature i readme.md (og justere "NY"-markering/er der)
 
 // TODO/WISHLIST:
+// dimZeroHourDays()
 // finish saneArrowKeys() (right/left navigation)
-// highlightNegativeDiffs()
-// highlightPositiveDiffs()
-// highlightZeroHourDays()
 // forbedre saneColumnWidth() => responsiveColumnWidths() - inc. responsive day names
 // spreadsheetLook()
 // highlightLineUnderCursor
@@ -40,8 +38,11 @@ String.prototype.appearsIn = function () {
     return arguments[0].indexOf(this) !== -1;
 };
 
-const KEYCODE_EQUALS = 61;
+function ignore() {
+    //pass item as param to get rid of 'unused' warnings
+}
 
+const KEYCODE_EQUALS = 61;
 const KEY_LEFT = 37;
 const KEY_UP = 38;
 const KEY_RIGHT = 39;
@@ -107,7 +108,7 @@ function sanePeriodNavigation() {
 }
 
 function saneCellWidths() {
-    $("head").append("<style>.myclass { width: 40px !important; }</style>");
+    $("head").append("<style>.myclass { width: 4em !important; } .riSingle{width:auto !important;}</style>");
 }
 
 
@@ -123,11 +124,10 @@ function killThoseEffingMenuAnimations() {
     };
 }
 
-function zebraStripes() {
+function tweakZebraStripes() {
     $("head").append("<style>" +
-        ".rgMasterTable>tbody tr:nth-child(even) { background-color: #E4ECF2; }" +
-        ".rgMasterTable>tbody>tr.rgEditRow>td{ border-bottom-width: 0;}" +
-        //".rgMasterTable>tbody>tr.rgEditRow>td:nth-child(1n+6) {width: 50px; border-right:solid 1px silver; }" +
+        ".RadGrid_WebBlue .rgAltRow { background-color: #E4ECF2;}" +
+        ".RadGrid_WebBlue .rgAltRow>td { border-width:0 0 0 1px;}" +
         "</style>");
 }
 
@@ -201,18 +201,18 @@ function leftCell($input) {
 function saneArrowKeys() {
     $(document).keydown(function (keyEvent) { // only keyup/keydown is generated for arrow keys (in Chrome)
         switch (keyEvent.keyCode) {
-            case KEY_UP:
-                upCell($(keyEvent.target));
-                break;
-            case KEY_DOWN:
-                downCell($(keyEvent.target));
-                break;
-            case KEY_RIGHT:
-                rightCell($(keyEvent.target));
-                break;
-            case KEY_LEFT:
-                leftCell($(keyEvent.target));
-                break;
+        case KEY_UP:
+            upCell($(keyEvent.target));
+            break;
+        case KEY_DOWN:
+            downCell($(keyEvent.target));
+            break;
+        case KEY_RIGHT:
+            rightCell($(keyEvent.target));
+            break;
+        case KEY_LEFT:
+            leftCell($(keyEvent.target));
+            break;
         }
     });
 
@@ -221,6 +221,16 @@ function saneArrowKeys() {
     });
 }
 
+function highlightTimeDiffs() {
+    $("tr.rgFooter:last>td[align=right]").each(function(){
+        if ($(this).text().includes("-")) {
+            $(this).attr("style", "color:#f00; font-weight:bold");
+        }
+        else if ($(this).text() !== "0,00") {
+            $(this).attr("style", "color:#0c0; font-weight:bold");
+        }
+    });
+}
 
 // SETUP
 
@@ -236,30 +246,29 @@ function initPeriod() {
     saneColumnHeaders();
     saneCellAlignment();
     sanePeriodHeader();
+    highlightTimeDiffs();
     setTimeout(saneArrowKeys, 100); // Timeout is an ugly hack. TODO: find clean trigger that occurs after page applies arrow key bindings, even following save.
 }
-
-function ignore() {
-} //pass item as param to get rid of 'unused' warnings
 
 function initPeriodDirectView() {
     sanePeriodNavigation();
     saneCellWidths();
-    zebraStripes();
+    tweakZebraStripes();
     ignore(likeYesterdayShortcut()); //TODO: reenable when bugs fixed
     saveShortcut();
+
     onPeriodChange(initPeriod);
     initPeriod();
-}
-
-function initCommon() {
-    killThoseEffingMenuAnimations();
 }
 
 function initView() {
     if ("/timereg_direct.aspx".appearsIn(document.location.pathname)) {
         initPeriodDirectView();
     }
+}
+
+function initCommon() {
+    killThoseEffingMenuAnimations();
 }
 
 function initPage() {

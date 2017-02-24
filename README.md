@@ -13,7 +13,9 @@ Installering
 
 Features
 --------
-* **NY**: Kun sebrastriper - ingen kantlinjer på rader
+* **NY**Rød/grønn highlight av timedifferanser
+* **NY**Tabellstyling tilpasset endringer i NaviWeb
+* Kun sebrastriper - ingen kantlinjer på rader
 * Navigere med piltaster (halvferdig - kun vertikalt)
 * Lagre med ctrl+s 
 * ~~Hurtigtast "som i går": '~~ _disabled - var buggy. kanskje neste gang_
