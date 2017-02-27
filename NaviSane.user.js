@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.3.0
+// @version     2.3.1
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -15,16 +15,17 @@
 
 // TODO/WISHLIST:
 // dimZeroHourDays()
+// "save" shortcut tooltip
+// '.' => ','
+// paste 07:15 => 7,25
+// fix "likeYesterday()"
+// responsiveColumnWidths() - inc. responsive day names?
 // finish saneArrowKeys() (right/left navigation)
-// forbedre saneColumnWidth() => responsiveColumnWidths() - inc. responsive day names
-// spreadsheetLook()
+// menuHoverIntent()
+// reopenButton()
 // highlightLineUnderCursor
 // highlightFocusedLine
-// reopenButton()
-// menuHoverIntent()
-// '.' => ','
-// 07:15 -> 7,25
-// fix "likeYesterday()"
+// style -> class
 
 // UTILS
 
@@ -232,13 +233,19 @@ function saneArrowKeys() {
 }
 
 function highlightTimeDiffs() {
-    $("tr.rgFooter:last>td[align=right]").each(function(){
+    $("tr.rgFooter:last>td[align=right]").each(function () {
         if ($(this).text().includes("-")) {
-            $(this).attr("style", "color:#f00; font-weight:bold");
+            $(this).attr("style", "color:#e00; font-weight:bold");
         }
-        else if ($(this).text() !== "0,00") {
+        else if ($(this).text().includes("0,00")) {
+            $(this).attr("style", "color:#484; font-weight:bold");
+        }
+        else {
             $(this).attr("style", "color:#0c0; font-weight:bold");
         }
+    });
+    $("tr.rgFooter:nth-child(2)>td[align=right]").each(function () {
+        $(this).attr("style", "color:#999; font-weight:bold");
     });
 }
 

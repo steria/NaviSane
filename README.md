@@ -13,14 +13,11 @@ Installering
 
 Features
 --------
-* **NY**Rød/grønn highlight av timedifferanser
-* **NY**Renere, flatere tabellstil
-* Kun sebrastriper - ingen kantlinjer på rader
-* Navigere med piltaster (halvferdig - kun vertikalt)
-* Lagre med ctrl+s 
-* ~~Hurtigtast "som i går": '~~ _disabled - var buggy. kanskje neste gang_
-* Sebrastriper i tabellen (takk til Mats)
-* Kjappe menyer, uten animasjoner og forsinkelser
-* Knapper for neste/forrige periode
-* Mer leselig periode-overskrift
+* **NY** Rød/grønn highlighting av timedifferanser
+* **NY** Renere, flatere tabellstil
+* Bla i ukene med neste/forrige-knapper
 * Dato i kolonneheadere
+* Mer leselig periode-overskrift
+* Ctrl+S virker
+* Navigere med piltaster (halvferdig - kun vertikalt)
+* Kjappe menyer, uten animasjoner og forsinkelser
