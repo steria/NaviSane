@@ -20,4 +20,4 @@ Features
 * Mer leselig periode-overskrift
 * Ctrl+S virker
 * Navigere med piltaster (halvferdig - kun vertikalt)
-* Kjappe menyer, uten animasjoner og forsinkelser
+* Kjappe menyer, uten forsinkende animasjoner som stjeler musefokus
