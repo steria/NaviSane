@@ -110,9 +110,9 @@ function sanePeriodNavigation() {
 
 function saneCellWidths() {
     $("head").append(
-        "<style>"+
-        "input.myclass { width: 100% !important; } "+
-        ".riSingle {width:auto !important;} "+
+        "<style>" +
+        "input.myclass { width: 100% !important; } " +
+        ".riSingle {width:auto !important;} " +
         "</style> "
     );
 }
@@ -138,7 +138,7 @@ function spreasheetStyle() {
         ".rgMasterTable>tbody td[align=right]{padding: 1px;  background-color:transparent;}" +
         ".rgMasterTable>tbody td:last-child {background-color:rgba(0,0,0, 0.05);}" +
         ".RadGrid_WebBlue .rgRow>td, .RadGrid_WebBlue .rgAltRow>td " + "  { border-width:0 0 0 1px;}" +
-        "input.myclass { background-color: transparent !important; border-width:0 !important; font-family: Arial, sans-serif !important } "+
+        "input.myclass { background-color: transparent !important; border-width:0 !important; font-family: Arial, sans-serif !important } " +
         "</style>");
 }
 
@@ -271,7 +271,7 @@ function initPeriodDirectView() {
     sanePeriodNavigation();
     saneCellWidths();
     spreasheetStyle();
-    ignore(likeYesterdayShortcut()); //TODO: reenable when bugs fixed
+    ignore(likeYesterdayShortcut); //TODO: reenable when bugs fixed
     saveShortcut();
 
     onPeriodChange(initPeriod);
