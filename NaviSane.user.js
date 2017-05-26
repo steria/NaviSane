@@ -212,18 +212,18 @@ function leftCell($input) {
 function saneArrowKeys() {
     $(document).keydown(function (keyEvent) { // only keyup/keydown is generated for arrow keys (in Chrome)
         switch (keyEvent.keyCode) {
-        case KEY_UP:
-            upCell($(keyEvent.target));
-            break;
-        case KEY_DOWN:
-            downCell($(keyEvent.target));
-            break;
-        case KEY_RIGHT:
-            rightCell($(keyEvent.target));
-            break;
-        case KEY_LEFT:
-            leftCell($(keyEvent.target));
-            break;
+            case KEY_UP:
+                upCell($(keyEvent.target));
+                break;
+            case KEY_DOWN:
+                downCell($(keyEvent.target));
+                break;
+            case KEY_RIGHT:
+                rightCell($(keyEvent.target));
+                break;
+            case KEY_LEFT:
+                leftCell($(keyEvent.target));
+                break;
         }
     });
 
@@ -233,20 +233,21 @@ function saneArrowKeys() {
 }
 
 function highlightTimeDiffs() {
+    $("tr.rgFooter:nth-child(2)>td[align=right]").each(function () {
+        $(this).attr("style", "color:#999; font-weight:normal");
+    });
     $("tr.rgFooter:last>td[align=right]").each(function () {
         if ($(this).text().includes("-")) {
             $(this).attr("style", "color:#e00; font-weight:bold");
         }
         else if ($(this).text().includes("0,00")) {
-            $(this).attr("style", "color:#484; font-weight:bold");
+            $(this).attr("style", "color:#000; font-weight:normal");
         }
         else {
-            $(this).attr("style", "color:#0c0; font-weight:bold");
+            $(this).attr("style", "color:#0b0; font-weight:bold");
         }
     });
-    $("tr.rgFooter:nth-child(2)>td[align=right]").each(function () {
-        $(this).attr("style", "color:#999; font-weight:bold");
-    });
+
 }
 
 // SETUP
