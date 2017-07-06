@@ -6,7 +6,7 @@
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
 // @description GUI-tweaks for timeføring
 // @match       https://naviwep.steria.no/*
-// @require     http://code.jquery.com/jquery-1.10.2.min.js
+// @require     https://code.jquery.com/jquery-3.2.1.min.js
 // ==/UserScript==
 
 // Pre-commit sjekkliste:
@@ -181,6 +181,7 @@ function saneSaveShortcut() {
             return false;
         }
     });
+    $("input[id$=SaveRegistrations]").prop("title", "Ctrl+S");
 }
 
 function upCell($input) {
