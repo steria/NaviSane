@@ -13,6 +13,7 @@ Installering
 
 Features
 --------
+* **NY** Mellomrom = "som i går". For hele kolonnen, bruk "=".
 * **NY** Rød/grønn highlighting av timedifferanser
 * **NY** Renere, flatere tabellstil
 * Bla i ukene med neste/forrige-knapper

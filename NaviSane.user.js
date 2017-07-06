@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.3.1
+// @version     2.4
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -18,7 +18,6 @@
 // "save" shortcut tooltip
 // '.' => ','
 // paste 07:15 => 7,25
-// fix "likeYesterday()"
 // responsiveColumnWidths() - inc. responsive day names?
 // finish saneArrowKeys() (right/left navigation)
 // menuHoverIntent()
@@ -42,13 +41,6 @@ String.prototype.appearsIn = function () {
 function ignore() {
     //pass item as param to get rid of 'unused' warnings
 }
-
-const KEYCODE_EQUALS = 61;
-const KEY_LEFT = 37;
-const KEY_UP = 38;
-const KEY_RIGHT = 39;
-const KEY_DOWN = 40;
-const KEY_S = 83;
 
 
 // FEATURES
@@ -111,8 +103,8 @@ function sanePeriodNavigation() {
 function saneCellWidths() {
     $("head").append(
         "<style>" +
-        "input.myclass { width: 100% !important; } " +
-        ".riSingle {width:auto !important;} " +
+        "  input.myclass { width: 100% !important; } " +
+        "  .riSingle {width:auto !important;} " +
         "</style> "
     );
 }
@@ -156,9 +148,7 @@ function inputLikeYesterday($input) {
 
 function columnLikeYesterday($input) {
     var $inputToLeft = $input.closest("td").prev().find("input.riTextBox");
-    var $inputToRight = $input.closest("td").next().find("input.riTextBox");
     if ($inputToLeft.length === 0) {
-        columnLikeYesterday($inputToRight);
         return;
     }
     inputsInSameColumn($input).each(function () {
@@ -168,19 +158,23 @@ function columnLikeYesterday($input) {
     $inputToRight.focus();
 }
 
-function likeYesterdayShortcut() {
-    $(document).keypress(function (keyEvent) { // only 'keypress' identifies '=' consistently without regard to actual key combo used (on Chrome)
-        if (keyEvent.keyCode === KEYCODE_EQUALS) {
+function likeYesterdayShortcuts() {
+    $(document).keyup(function (keyEvent) {
+        switch (keyEvent.key) {
+        case " ":
+            inputLikeYesterday($(keyEvent.target));
+            break;
+        case "=":
             columnLikeYesterday($(keyEvent.target));
+            break;
         }
     });
-    $("input.riTextBox").attr("title", "Like yesterday: '='");
+    $("input.riTextBox").attr("title", "<space> = Like yesterday");
 }
 
-
-function saveShortcut() {
+function saneSaveShortcut() {
     $(document).keydown(function (keyEvent) {
-        if (keyEvent.ctrlKey && keyEvent.keyCode === KEY_S) {
+        if (keyEvent.ctrlKey && keyEvent.key === "s") {
             keyEvent.preventDefault();
             keyEvent.target.blur();
             $("#ctl00_ContentPlaceHolder1_Grid_TimeSheet_ctl00_ctl02_ctl00_BTN_SaveRegistrations").click();
@@ -210,25 +204,27 @@ function leftCell($input) {
 }
 
 function saneArrowKeys() {
-    $(document).keydown(function (keyEvent) { // only keyup/keydown is generated for arrow keys (in Chrome)
-        switch (keyEvent.keyCode) {
-            case KEY_UP:
-                upCell($(keyEvent.target));
-                break;
-            case KEY_DOWN:
-                downCell($(keyEvent.target));
-                break;
-            case KEY_RIGHT:
-                rightCell($(keyEvent.target));
-                break;
-            case KEY_LEFT:
-                leftCell($(keyEvent.target));
-                break;
-        }
-    });
-
     $("input.riTextBox").each(function () {
         this.control._incrementSettings.InterceptArrowKeys = false;
+    });
+}
+
+function arrowKeyNavigation() {
+    $(document).keydown(function (keyEvent) { // only keyup/keydown is generated for arrow keys (in Chrome)
+        switch (keyEvent.key) {
+        case "ArrowUp":
+            upCell($(keyEvent.target));
+            break;
+        case "ArrowDown":
+            downCell($(keyEvent.target));
+            break;
+        case "ArrowRight":
+            rightCell($(keyEvent.target));
+            break;
+        case "ArrowLeft":
+            leftCell($(keyEvent.target));
+            break;
+        }
     });
 }
 
@@ -272,8 +268,9 @@ function initPeriodDirectView() {
     sanePeriodNavigation();
     saneCellWidths();
     spreasheetStyle();
-    ignore(likeYesterdayShortcut); //TODO: reenable when bugs fixed
-    saveShortcut();
+    arrowKeyNavigation();
+    saneSaveShortcut();
+    likeYesterdayShortcuts();
 
     onPeriodChange(initPeriod);
     initPeriod();
@@ -295,4 +292,3 @@ function initPage() {
 }
 
 initPage();
-
