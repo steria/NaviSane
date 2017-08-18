@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.6
+// @version     2.7
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -237,7 +237,7 @@ function arrowKeyNavigation() {
 
 function highlightDayOff($cell){
     var column = $cell.index() + 1;
-    $cell.closest('table').find('td:nth-child(' + column + ')').each( function(){
+    $cell.closest('table').find('tbody td:nth-child(' + column + ')').each( function(){
         $(this).attr("style", "background-color:rgba(255,0,0, 0.05);");
     });
 }
@@ -254,7 +254,7 @@ function highlightTimeDiffs() {
             $(this).attr("style", "color:#e00; font-weight:bold");
         }
         else if ($(this).text().includes("0,00")) {
-            $(this).attr("style", "color:#000; font-weight:normal; background-color:rgba(255,0,0, 0.05);");
+            $(this).attr("style", "color:#000; font-weight:normal;");
         }
         else {
             $(this).attr("style", "color:#0b0; font-weight:bold");
