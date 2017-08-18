@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.4
+// @version     2.5
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -14,11 +14,11 @@
 // * Beskrive feature i readme.md (og justere "NY"-markering/er der)
 
 // TODO/WISHLIST:
-// dimZeroHourDays()
+// no gradients
 // "save" shortcut tooltip
 // '.' => ','
 // paste 07:15 => 7,25
-// responsiveColumnWidths() - inc. responsive day names?
+// responsiveColumnWidths() - incl. responsive day names?
 // finish saneArrowKeys() (right/left navigation)
 // menuHoverIntent()
 // reopenButton()
@@ -121,17 +121,25 @@ function killThoseEffingMenuAnimations() {
     };
 }
 
-function spreasheetStyle() {
+function saneTableStyle() {
     $("head").append("<style>" +
-        ".RadGrid_WebBlue .rgAltRow { background-color: #f0f3fa;}" +
-        ".RadGrid_WebBlue .rgFooter td{padding-right: 5px;}" +
+        ".CurrentPeriod {margin:0}"+
+        ".RadGrid_WebBlue { border: unset }"+
+        ".RadGrid_WebBlue .rgCommandRow {background: unset}" +
+        ".RadGrid_WebBlue .rgCommandCell {border:unset}"+
+        ".RadGrid_WebBlue .rgHeader { background-image: unset; border: unset}" +
+        ".RadGrid_WebBlue .rgAltRow { background-color: #f7f7f7;}" +
+        ".RadGrid_WebBlue .rgFooter td{padding-right: 5px; border:unset}" +
         ".rgMasterTable td[align=right]{font-family: Arial, sans-serif !important;}" +
-        ".rgMasterTable>tbody td{ background-color:rgba(0,0,0, 0.05);}" +
+        ".rgMasterTable>tbody td{ background-color:rgba(0,64,128, 0.05);}" +
         ".rgMasterTable>tbody td[align=right]{padding: 1px;  background-color:transparent;}" +
-        ".rgMasterTable>tbody td:last-child {background-color:rgba(0,0,0, 0.05);}" +
+        ".rgMasterTable>tbody td:last-child {background-color:rgba(0,64,128, 0.05);}" +
         ".RadGrid_WebBlue .rgRow>td, .RadGrid_WebBlue .rgAltRow>td " + "  { border-width:0 0 0 1px;}" +
         "input.myclass { background-color: transparent !important; border-width:0 !important; font-family: Arial, sans-serif !important } " +
+        ".RadGrid_WebBlue .rgPager {background:unset}"+
+        ".RadGrid_WebBlue td.rgPagerCell {border:unset}"+
         "</style>");
+    $("#ctl00_ContentPlaceHolder1_Grid_TimeSheet").removeAttr('tabIndex');
 }
 
 function inputsInSameColumn($input) {
@@ -154,19 +162,17 @@ function columnLikeYesterday($input) {
     inputsInSameColumn($input).each(function () {
         inputLikeYesterday($(this));
     });
-
-    $inputToRight.focus();
 }
 
 function likeYesterdayShortcuts() {
     $(document).keyup(function (keyEvent) {
         switch (keyEvent.key) {
-        case " ":
-            inputLikeYesterday($(keyEvent.target));
-            break;
-        case "=":
-            columnLikeYesterday($(keyEvent.target));
-            break;
+            case " ":
+                inputLikeYesterday($(keyEvent.target));
+                break;
+            case "=":
+                columnLikeYesterday($(keyEvent.target));
+                break;
         }
     });
     $("input.riTextBox").attr("title", "<space> = Like yesterday");
@@ -213,19 +219,26 @@ function saneArrowKeys() {
 function arrowKeyNavigation() {
     $(document).keydown(function (keyEvent) { // only keyup/keydown is generated for arrow keys (in Chrome)
         switch (keyEvent.key) {
-        case "ArrowUp":
-            upCell($(keyEvent.target));
-            break;
-        case "ArrowDown":
-            downCell($(keyEvent.target));
-            break;
-        case "ArrowRight":
-            rightCell($(keyEvent.target));
-            break;
-        case "ArrowLeft":
-            leftCell($(keyEvent.target));
-            break;
+            case "ArrowUp":
+                upCell($(keyEvent.target));
+                break;
+            case "ArrowDown":
+                downCell($(keyEvent.target));
+                break;
+            case "ArrowRight":
+                rightCell($(keyEvent.target));
+                break;
+            case "ArrowLeft":
+                leftCell($(keyEvent.target));
+                break;
         }
+    });
+}
+
+function highlightDayOff($cell){
+    var column = $cell.index() + 1;
+    $cell.closest('table').find('td:nth-child(' + column + ')').each( function(){
+        $(this).attr("style", "background-color:rgba(255,0,0, 0.05);");
     });
 }
 
@@ -239,6 +252,7 @@ function highlightTimeDiffs() {
         }
         else if ($(this).text().includes("0,00")) {
             $(this).attr("style", "color:#000; font-weight:normal");
+            highlightDayOff($(this));
         }
         else {
             $(this).attr("style", "color:#0b0; font-weight:bold");
@@ -268,7 +282,7 @@ function initPeriod() {
 function initPeriodDirectView() {
     sanePeriodNavigation();
     saneCellWidths();
-    spreasheetStyle();
+    saneTableStyle();
     arrowKeyNavigation();
     saneSaveShortcut();
     likeYesterdayShortcuts();
