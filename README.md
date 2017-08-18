@@ -13,7 +13,8 @@ Installering
 
 Features
 --------
-* Highlight fridager
+* **NY** Highlight fridager
+* **NY** Enda flatere look
 * Mellomrom = "som i går". For hele kolonnen, bruk "=".
 * Rød/grønn highlighting av timedifferanser
 * Renere, flatere tabellstil
