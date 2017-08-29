@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.7
+// @version     2.7.2
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -14,7 +14,7 @@
 // * Beskrive feature i readme.md (og justere "NY"-markering/er der)
 
 // TODO/WISHLIST:
-// no gradients
+// fix focusable table after period change
 // "save" shortcut tooltip
 // '.' => ','
 // paste 07:15 => 7,25
@@ -123,10 +123,12 @@ function killThoseEffingMenuAnimations() {
 
 function saneTableStyle() {
     $("head").append("<style>" +
-        ".CurrentPeriod {margin:0}"+
+        ".CurrentPeriod {position: absolute; margin:0}"+
         ".RadGrid_WebBlue { border: unset }"+
+        ".RadMenu_WebBlue .rmRootGroup {background-image: unset}"+
         ".RadGrid_WebBlue .rgCommandRow {background: unset}" +
         ".RadGrid_WebBlue .rgCommandCell {border:unset}"+
+        ".RadGrid_WebBlue .rgCommandCell tr{display: inline}"+
         ".RadGrid_WebBlue .rgHeader { background-image: unset; border: unset}" +
         ".RadGrid_WebBlue .rgAltRow { background-color: #f7f7f7;}" +
         ".RadGrid_WebBlue .rgFooter td{padding-right: 5px; border:unset}" +
