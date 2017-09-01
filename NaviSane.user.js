@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.7.3
+// @version     2.7.4
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -18,11 +18,12 @@
 // paste 07:15 => 7,25
 // responsiveColumnWidths() - incl. responsive day names?
 // finish saneArrowKeys() (right/left navigation)
-// menuHoverIntent()
 // reopenButton()
-// highlightLineUnderCursor
-// highlightFocusedLine
+// highlightLineUnderCursor()
+// highlightFocusedLine()
 // style -> class
+// menuHoverIntent()
+
 
 // UTILS
 
@@ -52,10 +53,6 @@ function saneColumnHeaders() {
         var date = monthName[month] + " " + day;
         $(this).append("<br>" + date);
     });
-}
-
-function saneCellAlignment() {
-    $('span.riSingle').css('width', 'auto');
 }
 
 function sanePeriodHeader() {
@@ -98,15 +95,6 @@ function sanePeriodNavigation() {
     });
 }
 
-function saneCellWidths() {
-    $("head").append(
-        "<style>" +
-        "  input.myclass { width: 100% !important; } " +
-        "  .riSingle {width:auto !important;} " +
-        "</style> "
-    );
-}
-
 function killThoseEffingMenuAnimations() {
     Telerik.Web.UI.AnimationSettings.prototype.get_type = function () {
         return 0;
@@ -121,23 +109,25 @@ function killThoseEffingMenuAnimations() {
 
 function saneTableStyle() {
     $("head").append("<style>" +
-        ".CurrentPeriod {position: absolute; margin:0}"+
-        ".RadGrid_WebBlue { border: unset }"+
-        ".RadMenu_WebBlue .rmRootGroup {background-image: unset}"+
-        ".RadGrid_WebBlue .rgCommandRow {background: unset}" +
-        ".RadGrid_WebBlue .rgCommandCell {border:unset}"+
-        ".RadGrid_WebBlue .rgCommandCell tr{display: inline}"+
-        ".RadGrid_WebBlue .rgHeader { background-image: unset; border: unset}" +
-        ".RadGrid_WebBlue .rgAltRow { background-color: #f7f7f7;}" +
-        ".RadGrid_WebBlue .rgFooter td{padding-right: 5px; border:unset}" +
-        ".rgMasterTable td[align=right]{font-family: Arial, sans-serif !important;}" +
-        ".rgMasterTable>tbody td{ background-color:rgba(0,64,128, 0.05);}" +
-        ".rgMasterTable>tbody td[align=right]{padding: 1px;  background-color:transparent;}" +
-        ".rgMasterTable>tbody td:last-child {background-color:rgba(0,64,128, 0.05);}" +
-        ".RadGrid_WebBlue .rgRow>td, .RadGrid_WebBlue .rgAltRow>td " + "  { border-width:0 0 0 1px;}" +
+        ".CurrentPeriod {position: absolute; margin:0} "+
+        ".RadGrid_WebBlue { border: unset } "+
+        ".RadMenu_WebBlue .rmRootGroup {background-image: unset} "+
+        ".RadGrid_WebBlue .rgCommandRow {background: unset} " +
+        ".RadGrid_WebBlue .rgCommandCell {border:unset} "+
+        ".RadGrid_WebBlue .rgCommandCell tr{display: inline} "+
+        ".RadGrid_WebBlue .rgHeader { background-image: unset; border: unset} " +
+        ".RadGrid_WebBlue .rgAltRow { background-color: #f7f7f7;} " +
+        ".RadGrid_WebBlue .rgFooter td{padding-right: 5px; border:unset} " +
+        ".rgMasterTable td[align=right]{font-family: Arial, sans-serif !important;} " +
+        ".rgMasterTable>tbody td{ background-color:rgba(0,64,128, 0.05);} " +
+        ".rgMasterTable>tbody td[align=right]{padding: 1px;  background-color:transparent;} " +
+        ".rgMasterTable>tbody td:last-child {background-color:rgba(0,64,128, 0.05);} " +
+        ".RadGrid_WebBlue .rgRow>td, .RadGrid_WebBlue .rgAltRow>td " + "  { border-width:0 0 0 1px;} " +
+        "input.myclass { width: 100% !important; } " +
+        ".riSingle {width:auto !important;} " +
         "input.myclass { background-color: transparent !important; border-width:0 !important; font-family: Arial, sans-serif !important } " +
-        ".RadGrid_WebBlue .rgPager {background:unset}"+
-        ".RadGrid_WebBlue td.rgPagerCell {border:unset}"+
+        ".RadGrid_WebBlue .rgPager {background:unset} "+
+        ".RadGrid_WebBlue td.rgPagerCell {border:unset} "+
         "</style>");
 }
 
@@ -283,7 +273,6 @@ function afterNativePeriodInit() {
 
 function initPeriod() {
     saneColumnHeaders();
-    saneCellAlignment();
     sanePeriodHeader();
     highlightTimeDiffs();
     setTimeout(afterNativePeriodInit, 100);
@@ -291,29 +280,24 @@ function initPeriod() {
 
 function initPeriodDirectView() {
     sanePeriodNavigation();
-    saneCellWidths();
-    saneTableStyle();
     arrowKeyNavigation();
     saneSaveShortcut();
     likeYesterdayShortcuts();
+    initPeriod();
 
     onPeriodChange(initPeriod);
-    initPeriod();
-}
-
-function initView() {
-    if ("/timereg_direct.aspx".appearsIn(document.location.pathname)) {
-        initPeriodDirectView();
-    }
 }
 
 function initCommon() {
+    saneTableStyle();
     killThoseEffingMenuAnimations();
 }
 
 function initPage() {
     initCommon();
-    initView();
+    if ("/timereg_direct.aspx".appearsIn(document.location.pathname)) {
+        initPeriodDirectView();
+    }
 }
 
 initPage();
