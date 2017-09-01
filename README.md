@@ -15,6 +15,7 @@ Features
 --------
 * **NY** Highlight fridager
 * **NY** Enda flatere look
+* **NY** Vis sidenavigering bare ved behov
 * Mellomrom = "som i går". For hele kolonnen, bruk "=".
 * Rød/grønn highlighting av timedifferanser
 * Renere, flatere tabellstil

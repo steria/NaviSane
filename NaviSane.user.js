@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.7.4
+// @version     2.7.5
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -256,6 +256,12 @@ function saneTableFocus() {
     $("#ctl00_ContentPlaceHolder1_Grid_TimeSheet").removeAttr('tabIndex');
 }
 
+function conditionalPager(){
+    if ($(".rgPager .rgInfoPart").text().contains("in 1 pages")){
+        $(".rgPager").hide();
+    }
+}
+
 // SETUP
 
 function onPeriodChange(handler) {
@@ -275,6 +281,7 @@ function initPeriod() {
     saneColumnHeaders();
     sanePeriodHeader();
     highlightTimeDiffs();
+    conditionalPager();
     setTimeout(afterNativePeriodInit, 100);
 }
 
