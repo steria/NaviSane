@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.7.2
+// @version     2.7.3
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -14,8 +14,6 @@
 // * Beskrive feature i readme.md (og justere "NY"-markering/er der)
 
 // TODO/WISHLIST:
-// fix focusable table after period change
-// "save" shortcut tooltip
 // '.' => ','
 // paste 07:15 => 7,25
 // responsiveColumnWidths() - incl. responsive day names?
@@ -141,7 +139,6 @@ function saneTableStyle() {
         ".RadGrid_WebBlue .rgPager {background:unset}"+
         ".RadGrid_WebBlue td.rgPagerCell {border:unset}"+
         "</style>");
-    $("#ctl00_ContentPlaceHolder1_Grid_TimeSheet").removeAttr('tabIndex');
 }
 
 function inputsInSameColumn($input) {
@@ -265,6 +262,10 @@ function highlightTimeDiffs() {
 
 }
 
+function saneTableFocus() {
+    $("#ctl00_ContentPlaceHolder1_Grid_TimeSheet").removeAttr('tabIndex');
+}
+
 // SETUP
 
 function onPeriodChange(handler) {
@@ -275,12 +276,17 @@ function onPeriodChange(handler) {
     });
 }
 
+function afterNativePeriodInit() {
+    saneArrowKeys();
+    saneTableFocus();
+}
+
 function initPeriod() {
     saneColumnHeaders();
     saneCellAlignment();
     sanePeriodHeader();
     highlightTimeDiffs();
-    setTimeout(saneArrowKeys, 100); // Timeout is an ugly hack. TODO: find clean trigger that occurs after page applies arrow key bindings, even following save.
+    setTimeout(afterNativePeriodInit, 100);
 }
 
 function initPeriodDirectView() {
