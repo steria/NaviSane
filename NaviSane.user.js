@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.7.5
+// @version     2.7.6
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -109,25 +109,42 @@ function killThoseEffingMenuAnimations() {
 
 function saneTableStyle() {
     $("head").append("<style>" +
-        ".CurrentPeriod {position: absolute; margin:0} "+
+
+        // Regneark-celler: hele cellen _er_ et input-felt
+        ".riSingle {width:auto !important;} " +
+        "input.myclass { width: 100% !important; border-width:0 !important; } " +
+
+        // Få alle tall til å line opp
+        ".rgMasterTable td[align=right]{font-family: Arial, sans-serif !important;} " + // fast bredde på siffer uansett font-vekt
+        "input.myclass {font-family: Arial, sans-serif !important } " + // samme font i input
+        ".RadGrid_WebBlue .rgFooter td{padding-right: 5px; border:unset} " + // samme høyremarg for input og utregnede verdier
+
+        // flat stil
         ".RadGrid_WebBlue { border: unset } "+
         ".RadMenu_WebBlue .rmRootGroup {background-image: unset} "+
         ".RadGrid_WebBlue .rgCommandRow {background: unset} " +
-        ".RadGrid_WebBlue .rgCommandCell {border:unset} "+
-        ".RadGrid_WebBlue .rgCommandCell tr{display: inline} "+
         ".RadGrid_WebBlue .rgHeader { background-image: unset; border: unset} " +
-        ".RadGrid_WebBlue .rgAltRow { background-color: #f7f7f7;} " +
-        ".RadGrid_WebBlue .rgFooter td{padding-right: 5px; border:unset} " +
-        ".rgMasterTable td[align=right]{font-family: Arial, sans-serif !important;} " +
-        ".rgMasterTable>tbody td{ background-color:rgba(0,64,128, 0.05);} " +
-        ".rgMasterTable>tbody td[align=right]{padding: 1px;  background-color:transparent;} " +
-        ".rgMasterTable>tbody td:last-child {background-color:rgba(0,64,128, 0.05);} " +
+
         ".RadGrid_WebBlue .rgRow>td, .RadGrid_WebBlue .rgAltRow>td " + "  { border-width:0 0 0 1px;} " +
-        "input.myclass { width: 100% !important; } " +
-        ".riSingle {width:auto !important;} " +
-        "input.myclass { background-color: transparent !important; border-width:0 !important; font-family: Arial, sans-serif !important } " +
+        ".RadGrid_WebBlue .rgCommandCell {border:unset} "+
         ".RadGrid_WebBlue .rgPager {background:unset} "+
         ".RadGrid_WebBlue td.rgPagerCell {border:unset} "+
+        "input.myclass { background-color: transparent !important; } " +
+
+        // Kolonnefarger
+        ".rgMasterTable>tbody td{ background-color:rgba(0,64,128, 0.05);} " +  // blågrå for read-only
+        ".rgMasterTable>tbody td:last-child {background-color:rgba(0,64,128, 0.05);} " +
+        ".rgMasterTable>tbody td[align=right]{padding: 1px;  background-color:transparent;} " + // hvit for input
+        ".RadGrid_WebBlue .rgAltRow { background-color: #f7f7f7;} " + // sebra-striper som funker med kolonnefargene
+
+        // fjern øvre knapper
+        "thead .rgCommandRow {display: none} "+
+
+        // få nedre knapper til høyre og på samme linje:
+        ".RadGrid_WebBlue .rgCommandCell tr{display: inline} "+
+        ".RadGrid_WebBlue .rgCommandCell table {width: 100%} "+
+        ".RadGrid_WebBlue .rgCommandCell table tbody {text-align: right} "+
+
         "</style>");
 }
 
@@ -227,7 +244,7 @@ function arrowKeyNavigation() {
 function highlightDayOff($cell){
     var column = $cell.index() + 1;
     $cell.closest('table').find('tbody td:nth-child(' + column + ')').each( function(){
-        $(this).attr("style", "background-color:rgba(255,0,0, 0.05);");
+        $(this).attr("style", "background-color:rgba(255,0,0, 0.05);"); //TODO: bruk class i stedet
     });
 }
 
