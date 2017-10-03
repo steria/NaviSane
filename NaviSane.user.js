@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.7.6
+// @version     2.7.7
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -132,9 +132,9 @@ function saneTableStyle() {
         "input.myclass { background-color: transparent !important; } " +
 
         // Kolonnefarger
+        ".rgMasterTable>tbody td[align=right]{padding: 1px;  background-color:transparent;} " + // hvit for input
         ".rgMasterTable>tbody td{ background-color:rgba(0,64,128, 0.05);} " +  // blågrå for read-only
         ".rgMasterTable>tbody td:last-child {background-color:rgba(0,64,128, 0.05);} " +
-        ".rgMasterTable>tbody td[align=right]{padding: 1px;  background-color:transparent;} " + // hvit for input
         ".RadGrid_WebBlue .rgAltRow { background-color: #f7f7f7;} " + // sebra-striper som funker med kolonnefargene
 
         // fjern øvre knapper
