@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.7.8
+// @version     2.8
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -14,8 +14,6 @@
 // * Beskrive feature i readme.md (og justere "NY"-markering/er der)
 
 // TODO/WISHLIST:
-// '.' => ','
-// paste 07:15 => 7,25
 // responsiveColumnWidths() - incl. responsive day names?
 // finish saneArrowKeys() (right/left navigation)
 // reopenButton()
@@ -153,6 +151,11 @@ function saneTableStyle() {
     "</style>");
 }
 
+function inputsInSameRow($input) {
+  var row = $input.closest('tr');
+  return $(row).find('input.riTextBox');
+}
+
 function inputsInSameColumn($input) {
   var column = $input.closest('td').index() + 1;
   return $input.closest('table').find('td:nth-child(' + column + ') input.riTextBox');
@@ -199,6 +202,20 @@ function saneSaveShortcut() {
     }
   });
   $("input[id$=SaveRegistrations]").prop("title", "Ctrl+S");
+}
+
+function replaceSelection(input, content){
+  var old = $(input).val();
+  $(input).val(old.slice(0,input.selectionStart) + content + old.slice(input.selectionEnd));
+}
+
+function saneDecimalPoint() {
+  $("#TimeSheetTableDiv .riTextBox").keydown(function (e1) {
+    if (e1.key === ".") {
+      replaceSelection(e1.target, ",");
+      return false;
+    }
+  });
 }
 
 function upCell($input) {
@@ -284,6 +301,32 @@ function conditionalPager(){
   }
 }
 
+function toDecimal(hoursMinutes){
+  var [both, hours, minutes] = hoursMinutes.match(/(\d+):(\d+)/);
+  var hundredths = Math.round(minutes*100/60);
+  return `${hours},${hundredths}`;
+}
+
+function parseTime(src){
+  if (src.match(/\d+:\d+/)) return toDecimal(src);
+  return src.replace('.', ',');
+}
+
+function smartPaste(){
+  $("#TimeSheetTableDiv .riTextBox").on('paste', function(e) {
+    var payload = e.originalEvent.clipboardData.getData('text');
+    var rowCells = inputsInSameRow(e.target);
+    var focusColumn = rowCells.index(e.target);
+    var newValues = payload.split("\t").map(s=>parseTime(s));
+    if (newValues && newValues[0]){
+      for (var i = 0; i < newValues.length && i + focusColumn < rowCells.length; i++){
+        $(rowCells[i+focusColumn]).val(newValues[i]);
+      }
+      return false;
+    }
+  });
+}
+
 // SETUP
 
 function onPeriodChange(handler) {
@@ -302,6 +345,7 @@ function afterNativePeriodInit() {
 function initPeriod() {
   saneColumnHeaders();
   sanePeriodHeader();
+  smartPaste();
   highlightTimeDiffs();
   conditionalPager();
   setTimeout(afterNativePeriodInit, 100);
@@ -311,6 +355,7 @@ function initPeriodDirectView() {
   sanePeriodNavigation();
   arrowKeyNavigation();
   saneSaveShortcut();
+  saneDecimalPoint();
   likeYesterdayShortcuts();
   initPeriod();
 

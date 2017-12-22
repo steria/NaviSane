@@ -13,9 +13,12 @@ Installering
 
 Features
 --------
-* **NY** Highlight fridager
-* **NY** Enda flatere look
-* **NY** Vis sidenavigering bare ved behov
+* **NY** Lim inn hele rader
+* **NY** Lim inn på hh:mm-format - konverteres til desimal-timer
+* **NY** Aksepterer både . og , som desimaltegn
+* Highlight fridager
+* Enda flatere look
+* Vis sidenavigering bare ved behov
 * Mellomrom = "som i går". For hele kolonnen, bruk "=".
 * Rød/grønn highlighting av timedifferanser
 * Renere, flatere tabellstil
