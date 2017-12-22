@@ -43,30 +43,30 @@ function ignore() {
 // FEATURES
 
 function saneColumnHeaders() {
-  var monthName = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const monthName = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   $("a[title^='Date']").each(function () {
-    var title = $(this).attr("title");
-    var month = Number(title.substr(10, 2));
-    var day = Number(title.substr(12, 2));
-    var date = monthName[month] + " " + day;
+    const title = $(this).attr("title");
+    const month = Number(title.substr(10, 2));
+    const day = Number(title.substr(12, 2));
+    const date = monthName[month] + " " + day;
     $(this).append("<br>" + date);
   });
 }
 
 function sanePeriodHeader() {
-  var headerSpan = $("#ctl00_ContentPlaceHolder1_LBL_CurrentPeriod");
-  var oldTitle = headerSpan.text();
-  var groups = /^(\d\d\.\d\d\.\d\d\d\d - \d\d\.\d\d\.\d\d\d\d) .Week(\d\d?).\d\d\d\d ?(\d?)/.exec(oldTitle);
-  var dateRange = groups[1];
-  var weekNo = groups[2];
-  var weekPart = groups[3];
-  var weekSep = weekPart.length > 0 ? "." : "";
-  var newText = "&nbsp;<b>Week " + weekNo + weekSep + weekPart + "</b>&nbsp; <span style='color:silver;font-size:smaller'>" + dateRange + "</span>";
+  const headerSpan = $("#ctl00_ContentPlaceHolder1_LBL_CurrentPeriod");
+  const oldTitle = headerSpan.text();
+  const groups = /^(\d\d\.\d\d\.\d\d\d\d - \d\d\.\d\d\.\d\d\d\d) .Week(\d\d?).\d\d\d\d ?(\d?)/.exec(oldTitle);
+  const dateRange = groups[1];
+  const weekNo = groups[2];
+  const weekPart = groups[3];
+  const weekSep = weekPart.length > 0 ? "." : "";
+  const newText = "&nbsp;<b>Week " + weekNo + weekSep + weekPart + "</b>&nbsp; <span style='color:silver;font-size:smaller'>" + dateRange + "</span>";
   headerSpan.html(newText);
 }
 
 function currentPeriod() {
-  var header = $("#ctl00_ContentPlaceHolder1_LBL_CurrentPeriod").text();
+  const header = $("#ctl00_ContentPlaceHolder1_LBL_CurrentPeriod").text();
   return header.replace(/^.*(\d\d\.\d\d\.\d\d\d\d - \d\d\.\d\d\.\d\d\d\d).*$/, "$1");
 }
 
@@ -77,18 +77,18 @@ function sanePeriodNavigation() {
   ;
 
   $("#prevPeriod").click(function () {
-    var period = currentPeriod();
-    var dropdown = $("#ctl00_ContentPlaceHolder1_PeriodDropdownList_Arrow").get(0);
+    const period = currentPeriod();
+    const dropdown = $("#ctl00_ContentPlaceHolder1_PeriodDropdownList_Arrow").get(0);
     dropdown.click();
-    var thisItem = $("li.rcbItem:contains('" + period + "')");
+    const thisItem = $("li.rcbItem:contains('" + period + "')");
     thisItem.next().click();
   });
 
   $("#nextPeriod").click(function () {
-    var period = currentPeriod();
-    var dropdown = $("#ctl00_ContentPlaceHolder1_PeriodDropdownList_Arrow").get(0);
+    const period = currentPeriod();
+    const dropdown = $("#ctl00_ContentPlaceHolder1_PeriodDropdownList_Arrow").get(0);
     dropdown.click();
-    var thisItem = $("li.rcbItem:contains('" + period + "')");
+    const thisItem = $("li.rcbItem:contains('" + period + "')");
     thisItem.prev().click();
   });
 }
@@ -152,24 +152,24 @@ function saneTableStyle() {
 }
 
 function inputsInSameRow($input) {
-  var row = $input.closest('tr');
+  const row = $input.closest('tr');
   return $(row).find('input.riTextBox');
 }
 
 function inputsInSameColumn($input) {
-  var column = $input.closest('td').index() + 1;
+  const column = $input.closest('td').index() + 1;
   return $input.closest('table').find('td:nth-child(' + column + ') input.riTextBox');
 }
 
 function inputLikeYesterday($input) {
-  var $inputToLeft = $input.closest("td").prev().find("input.riTextBox");
+  const $inputToLeft = $input.closest("td").prev().find("input.riTextBox");
   if ($inputToLeft.length === 1) {
     $input.val($inputToLeft.val());
   }
 }
 
 function columnLikeYesterday($input) {
-  var $inputToLeft = $input.closest("td").prev().find("input.riTextBox");
+  const $inputToLeft = $input.closest("td").prev().find("input.riTextBox");
   if ($inputToLeft.length === 0) {
     return;
   }
@@ -205,12 +205,12 @@ function saneSaveShortcut() {
 }
 
 function replaceSelection(input, content){
-  var old = $(input).val();
+  const old = $(input).val();
   $(input).val(old.slice(0,input.selectionStart) + content + old.slice(input.selectionEnd));
 }
 
 function saneDecimalPoint() {
-  $("#TimeSheetTableDiv .riTextBox").keydown(function (e1) {
+  $("#TimeSheetTableDiv").find(".riTextBox").keydown(function (e1) {
     if (e1.key === ".") {
       replaceSelection(e1.target, ",");
       return false;
@@ -219,14 +219,14 @@ function saneDecimalPoint() {
 }
 
 function upCell($input) {
-  var columnNo = $($input).closest('td').index();
-  var $row = $input.closest('tr');
+  const columnNo = $($input).closest('td').index();
+  const $row = $input.closest('tr');
   $row.prev().children().eq(columnNo).find('input.riTextBox').focus();
 }
 
 function downCell($input) {
-  var columnNo = $($input).closest('td').index();
-  var $row = $input.closest('tr');
+  const columnNo = $($input).closest('td').index();
+  const $row = $input.closest('tr');
   $row.next().children().eq(columnNo).find('input.riTextBox').focus();
 }
 
@@ -264,7 +264,7 @@ function arrowKeyNavigation() {
 }
 
 function highlightDayOff($cell){
-  var column = $cell.index() + 1;
+  const column = $cell.index() + 1;
   $cell.closest('table').find('tbody td:nth-child(' + column + ')').each( function(){
     $(this).attr("style", "background-color:rgba(255,0,0, 0.05);"); //TODO: use class in stead
   });
@@ -302,8 +302,8 @@ function conditionalPager(){
 }
 
 function toDecimal(hoursMinutes){
-  var [both, hours, minutes] = hoursMinutes.match(/(\d+):(\d+)/);
-  var hundredths = Math.round(minutes*100/60);
+  const [both, hours, minutes] = hoursMinutes.match(/(\d+):(\d+)/);
+  const hundredths = Math.round(minutes*100/60);
   return `${hours},${hundredths}`;
 }
 
@@ -313,13 +313,13 @@ function parseTime(src){
 }
 
 function smartPaste(){
-  $("#TimeSheetTableDiv .riTextBox").on('paste', function(e) {
-    var payload = e.originalEvent.clipboardData.getData('text');
-    var rowCells = inputsInSameRow(e.target);
-    var focusColumn = rowCells.index(e.target);
-    var newValues = payload.split("\t").map(s=>parseTime(s));
+  $("#TimeSheetTableDiv").find(".riTextBox").on('paste', function(e) {
+    const payload = e.originalEvent.clipboardData.getData('text');
+    const rowCells = inputsInSameRow(e.target);
+    const focusColumn = rowCells.index(e.target);
+    const newValues = payload.split("\t").map(s => parseTime(s));
     if (newValues && newValues[0]){
-      for (var i = 0; i < newValues.length && i + focusColumn < rowCells.length; i++){
+      for (let i = 0; i < newValues.length && i + focusColumn < rowCells.length; i++){
         $(rowCells[i+focusColumn]).val(newValues[i]);
       }
       return false;
