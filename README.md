@@ -19,7 +19,8 @@ Features
 * Highlight fridager
 * Enda flatere look
 * Vis sidenavigering bare ved behov
-* Mellomrom = "som i går". For hele kolonnen, bruk "=".
+* Snarvei: Mellomrom = "7,5" + neste celle. 
+* Snarvei: "=" kopierer hele gårsdagen.
 * Rød/grønn highlighting av timedifferanser
 * Renere, flatere tabellstil
 * Bla i ukene med neste/forrige-knapper

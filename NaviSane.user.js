@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        NaviSane
-// @version     2.8
+// @version     2.8.1
 // @namespace   https://github.com/steria/NaviSane
 // @homepage    https://github.com/steria/NaviSane
 // @downloadURL https://github.com/steria/NaviSane/raw/master/NaviSane.user.js
@@ -161,6 +161,11 @@ function inputsInSameColumn($input) {
   return $input.closest('table').find('td:nth-child(' + column + ') input.riTextBox');
 }
 
+function fullDay($input) {
+  $input.val("7,5");
+  rightCell($input);
+}
+
 function inputLikeYesterday($input) {
   const $inputToLeft = $input.closest("td").prev().find("input.riTextBox");
   if ($inputToLeft.length === 1) {
@@ -178,18 +183,18 @@ function columnLikeYesterday($input) {
   });
 }
 
-function likeYesterdayShortcuts() {
+function autoFillShortcuts() {
   $(document).keyup(function (keyEvent) {
     switch (keyEvent.key) {
     case " ":
-      inputLikeYesterday($(keyEvent.target));
+      fullDay($(keyEvent.target));
       break;
     case "=":
       columnLikeYesterday($(keyEvent.target));
       break;
     }
   });
-  $("input.riTextBox").attr("title", "<space> = Like yesterday");
+  $("input.riTextBox").attr("title", "Shortcuts: \n<space>: 7,5 \n'=': Entire day like yesterday");
 }
 
 function saneSaveShortcut() {
@@ -231,7 +236,7 @@ function downCell($input) {
 }
 
 function rightCell($input) {
-  //TODO: move focus right ONLY if cursor is at end of content.
+  const $column = $($input).closest('td').next().find('input.riTextBox').focus();
 }
 
 function leftCell($input) {
@@ -254,10 +259,10 @@ function arrowKeyNavigation() {
       downCell($(keyEvent.target));
       break;
     case "ArrowRight":
-      rightCell($(keyEvent.target));
+      //rightCell($(keyEvent.target));
       break;
     case "ArrowLeft":
-      leftCell($(keyEvent.target));
+      //leftCell($(keyEvent.target));
       break;
     }
   });
@@ -356,7 +361,7 @@ function initPeriodDirectView() {
   arrowKeyNavigation();
   saneSaveShortcut();
   saneDecimalPoint();
-  likeYesterdayShortcuts();
+  autoFillShortcuts();
   initPeriod();
 
   onPeriodChange(initPeriod);
